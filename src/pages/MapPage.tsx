@@ -1,0 +1,143 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { MapContainer, TileLayer } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import { useReports } from '../hooks/useReports';
+import ReportMarker from '../components/map/ReportMarker';
+import HeatMapLayer from '../components/map/HeatMapLayer';
+import Loader from '../components/ui/Loader';
+import { Map, Flame, Layers } from 'lucide-react';
+import { useEffect } from 'react';
+
+function useHeatScript() {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const L = (window as any).L;
+    if (L?.heatLayer) { setReady(true); return; }
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js';
+    script.async = true;
+    script.onload = () => setReady(true);
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
+  return ready;
+}
+
+const legendItems = [
+  { color: '#4ade80', label: 'Низкое загрязнение' },
+  { color: '#fbbf24', label: 'Среднее загрязнение' },
+  { color: '#f87171', label: 'Высокое загрязнение' },
+  { color: 'rgba(255,255,255,0.3)', label: 'Не определено' },
+];
+
+export default function MapPage() {
+  const { reports, loading } = useReports();
+  const [mode, setMode] = useState<'markers' | 'heat'>('markers');
+  const heatReady = useHeatScript();
+
+  if (loading) return <Loader text="Загрузка карты..." />;
+
+  return (
+    <div className="relative map-full">
+      {/* Controls overlay */}
+      <div className="absolute top-8 right-8 z-[1000] flex flex-col" style={{ gap: '20px' }}>
+        {/* Mode toggle */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex rounded-[24px]"
+          style={{ gap: '8px', padding: '8px', background: 'var(--bg-surface)', border: '1px solid var(--border-md)', backdropFilter: 'blur(20px)' }}
+        >
+          {[
+            { key: 'markers' as const, label: 'Маркеры', icon: <Map size={18} /> },
+            { key: 'heat'    as const, label: 'Тепло',   icon: <Flame size={18} /> },
+          ].map(({ key, label, icon }) => (
+            <motion.button
+              key={key}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setMode(key)}
+              className="flex items-center rounded-[18px] text-[14px] font-bold transition-all"
+              style={mode === key
+                ? { gap: '12px', padding: '12px 24px', background: 'rgba(74,222,128,0.12)', color: 'var(--green)', border: '1px solid rgba(74,222,128,0.2)' }
+                : { gap: '12px', padding: '12px 24px', color: 'var(--text-muted)' }
+              }
+            >
+              {icon} {label}
+            </motion.button>
+          ))}
+        </motion.div>
+
+        {/* Count */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          className="rounded-[24px] min-w-[200px]"
+          style={{ padding: '24px 32px', background: 'var(--bg-surface)', border: '1px solid var(--border-md)', backdropFilter: 'blur(20px)' }}
+        >
+          <p className="label-caps" style={{ marginBottom: '8px', fontSize: '12px' }}>Точек на карте</p>
+          <p className="font-bold" style={{ fontSize: '36px', fontFamily: 'Syne', color: 'var(--green)', lineHeight: 1.1 }}>
+            {reports.length}
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Legend */}
+      <motion.div
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.2, duration: 0.4 }}
+        className="absolute bottom-10 left-8 z-[1000]"
+      >
+        <div
+          className="rounded-[32px] min-w-[300px]"
+          style={{ padding: '28px 36px', background: 'var(--bg-surface)', border: '1px solid var(--border-md)', backdropFilter: 'blur(20px)' }}
+        >
+          <div className="flex items-center" style={{ gap: '12px', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid var(--border)' }}>
+            <Layers size={16} style={{ color: 'var(--text-muted)' }} />
+            <p className="label-caps" style={{ fontSize: '13px' }}>Уровень загрязнения</p>
+          </div>
+          <div className="flex flex-col" style={{ gap: '16px' }}>
+            {legendItems.map((item) => (
+              <div key={item.label} className="flex items-center" style={{ gap: '16px' }}>
+                <div
+                  className="rounded-full flex-shrink-0"
+                  style={{
+                    width: '18px', height: '18px',
+                    background: item.color,
+                    boxShadow: `0 0 12px ${item.color}`,
+                    border: '2px solid rgba(255,255,255,0.15)',
+                  }}
+                />
+                <span className="font-bold tracking-wide" style={{ fontSize: '14px', color: 'var(--text-1)' }}>
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
+      <MapContainer
+        center={[48.0196, 66.9237]}
+        zoom={5}
+        minZoom={3}
+        maxBounds={[[-90, -180], [90, 180]]}
+        maxBoundsViscosity={1.0}
+        style={{ height: '100%', width: '100%' }}
+        zoomControl={false}
+      >
+        <TileLayer
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
+          noWrap={true}
+          bounds={[[-90, -180], [90, 180]]}
+        />
+        {mode === 'markers' && reports.map((r) => <ReportMarker key={r.id} report={r} />)}
+        {mode === 'heat' && heatReady && <HeatMapLayer reports={reports} />}
+      </MapContainer>
+    </div>
+  );
+}
