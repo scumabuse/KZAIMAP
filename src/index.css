@@ -483,3 +483,176 @@ body::before {
   border-radius: 8px 0 0 0 !important;
 }
 .leaflet-control-attribution a { color: var(--green-dim) !important; }
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE LAYOUT — Mobile First
+═══════════════════════════════════════════════════════ */
+
+/* Bottom Mobile Nav */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 200;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-md);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 8px 0 env(safe-area-inset-bottom, 8px);
+}
+.mobile-nav-inner {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.mobile-nav-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 8px 16px;
+  border: none; background: transparent; cursor: pointer;
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  border-radius: var(--r-sm);
+  transition: color 0.2s;
+  min-width: 56px;
+}
+.mobile-nav-btn.active { color: var(--green); }
+.mobile-nav-btn svg { flex-shrink: 0; }
+
+/* Page container adaptive padding */
+.page-container {
+  padding: 80px 48px 80px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Tablet (max 1024px) ───────────────────────── */
+@media (max-width: 1024px) {
+  :root { --sidebar-w: 300px; }
+
+  .page-container { padding: 72px 32px 72px; }
+
+  /* Forecast grid: 2 cols on tablet */
+  .forecast-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Admin table – hide some columns */
+  .data-table .col-hide-tablet { display: none; }
+}
+
+/* ── Mobile (max 768px) ────────────────────────── */
+@media (max-width: 768px) {
+  :root { --sidebar-w: 88vw; }
+
+  /* Show bottom nav, hide hamburger toggle on mobile */
+  .mobile-nav { display: block; }
+
+  /* Push content above bottom nav */
+  main { padding-bottom: 72px; }
+
+  .page-container { padding: 72px 16px 88px; }
+
+  /* Cards */
+  .card { padding: 20px; }
+  .stat-card { padding: 20px; }
+
+  /* Buttons full-width when stacked */
+  .btn-stack-mobile { flex-direction: column !important; }
+  .btn-stack-mobile .btn-primary,
+  .btn-stack-mobile .btn-ghost { width: 100%; justify-content: center; }
+
+  /* Hero heading */
+  .heading-hero { font-size: clamp(38px, 10vw, 60px) !important; }
+
+  /* Trust strip stacks to 3-col mini */
+  .trust-strip { gap: 24px !important; }
+
+  /* Features grid: 1 col */
+  .features-grid { grid-template-columns: 1fr !important; }
+
+  /* Stat cards: 2 col */
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Reports grid: 1 col */
+  .reports-grid { grid-template-columns: 1fr !important; }
+
+  /* Admin page */
+  .admin-header { flex-direction: column !important; align-items: flex-start !important; gap: 16px !important; }
+  .admin-filter-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Forecast grid: 2 col */
+  .forecast-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Detail panel in forecast */
+  .forecast-detail-row { flex-direction: column !important; }
+  .forecast-detail-stats { grid-template-columns: repeat(3, 1fr) !important; }
+
+  /* Table: horizontal scroll on mobile */
+  .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .data-table { min-width: 560px; }
+
+  /* Map full height adjust for bottom nav */
+  .map-full { height: calc(100vh - 72px); }
+
+  /* AddReport: two column → single column */
+  .add-report-grid { grid-template-columns: 1fr !important; }
+
+  /* Map search on mobile: shrink width */
+  .map-search-wrap { max-width: calc(100vw - 120px); }
+
+  /* Hide map legend on mobile (too cramped) */
+  .map-legend-wrap { display: none !important; }
+  /* Show compact legend toggle button instead */
+  .map-legend-mobile { display: block !important; }
+}
+
+/* ── Small phones (max 480px) ──────────────────── */
+@media (max-width: 480px) {
+  .page-container { padding: 64px 12px 88px; }
+
+  /* Stat cards: 1 col on very small screens */
+  .stats-grid { grid-template-columns: 1fr !important; }
+
+  /* Forecast grid: 1 col */
+  .forecast-grid { grid-template-columns: 1fr !important; }
+
+  /* Admin filter: 1 col */
+  .admin-filter-grid { grid-template-columns: 1fr !important; }
+
+  /* Forecast detail stats: 1 col */
+  .forecast-detail-stats { grid-template-columns: 1fr !important; }
+}
+
+/* ── Large screens / TV (min 1440px) ──────────── */
+@media (min-width: 1440px) {
+  .page-container { padding: 100px 72px 100px; }
+  :root { --sidebar-w: 360px; }
+}
+
+@media (min-width: 1920px) {
+  .page-container { max-width: 1600px; }
+}
+
+/* ── Pointer: touch device optimizations ─────── */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .nav-link { padding: 18px 16px !important; }
+  .btn-primary, .btn-ghost { min-height: 52px; }
+  .mobile-nav-btn { padding: 10px 16px; }
+}
+
+/* map-legend-mobile: hidden by default, shown on mobile by media query */
+.map-legend-mobile { display: none; }
+
+/* Mobile map controls: shift mode toggle right to avoid hamburger overlap */
+@media (max-width: 768px) {
+  /* Map mode buttons: move below hamburger on small screens */
+  .map-controls-top { top: 88px !important; right: 12px !important; }
+  /* Make map stat counter smaller on mobile */
+  .map-count-card { padding: 14px 20px !important; min-width: unset !important; }
+  /* Map search — push from hamburger */
+  .map-search-wrap { left: 88px !important; }
+}
+
+

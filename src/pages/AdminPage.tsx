@@ -155,7 +155,7 @@ export default function AdminPage() {
   ];
 
   return (
-    <div style={{ padding: '60px 48px 80px', maxWidth: 1280, margin: '0 auto', position: 'relative', display: 'flex', flexDirection: 'column', gap: 48 }}>
+    <div className="page-container" style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 48 }}>
       <div className="glow-orb w-[500px] h-[500px] -top-20 -right-20 opacity-[0.04]" style={{ background: '#4ade80' }} />
 
       {/* Header */}
@@ -163,7 +163,7 @@ export default function AdminPage() {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex flex-col md:flex-row md:items-end justify-between gap-8"
+        className="admin-header flex flex-col md:flex-row md:items-end justify-between gap-8"
       >
         <div>
           <p className="label-caps mb-3" style={{ color: 'var(--green)' }}>Только для администраторов</p>
@@ -220,7 +220,7 @@ export default function AdminPage() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1, duration: 0.5 }}
-        className="grid grid-cols-2 md:grid-cols-4 gap-4"
+        className="admin-filter-grid grid grid-cols-2 md:grid-cols-4 gap-4"
       >
         {filterTabs.map(({ key, label, count, icon, color }, i) => (
           <motion.button
@@ -311,7 +311,7 @@ export default function AdminPage() {
               </h3>
             </div>
           </div>
-          <div className="overflow-x-auto">
+          <div className="table-wrapper overflow-x-auto">
             <table className="data-table">
               <thead>
                 <tr>

@@ -259,14 +259,14 @@ export default function AddReportPage() {
   const isProcessing = step !== 'idle';
 
   return (
-    <div style={{ fontFamily: FONT, padding: '104px 40px 80px', position: 'relative' }}>
+    <div className="page-container" style={{ fontFamily: FONT, position: 'relative' }}>
       <div className="glow-orb" style={{ width: 400, height: 400, top: -80, right: -80, opacity: 0.04, background: '#4ade80', position: 'absolute' }} />
 
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
         style={{ marginBottom: 40 }}>
         <p style={{ fontFamily: FONT, fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--green)', marginBottom: 12 }}>Новое обращение</p>
-        <h1 style={{ fontFamily: FONT, fontSize: 52, fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--text-1)', lineHeight: 1.05, marginBottom: 14 }}>
+        <h1 style={{ fontFamily: FONT, fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--text-1)', lineHeight: 1.05, marginBottom: 14 }}>
           Сообщить о свалке
         </h1>
         <p style={{ fontFamily: FONT, fontSize: 17, fontWeight: 500, color: 'var(--text-muted)', maxWidth: 540, lineHeight: 1.6 }}>
@@ -276,7 +276,7 @@ export default function AddReportPage() {
 
       <form onSubmit={handleSubmit}>
         {/* Two-column layout */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
+        <div className="add-report-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
           {/* Left column: Photo + Description */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
             {/* Photo */}

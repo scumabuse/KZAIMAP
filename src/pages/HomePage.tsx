@@ -125,11 +125,7 @@ export default function HomePage() {
       }} />
 
       {/* ── Main container ───────────────────────── */}
-      <div style={{
-        position: 'relative', zIndex: 1,
-        maxWidth: 1280, margin: '0 auto',
-        padding: '80px 48px 80px',
-      }}>
+      <div className="page-container" style={{ position: 'relative', zIndex: 1 }}>
 
         {/* ════════════════════════════════════════
             HERO
@@ -195,6 +191,7 @@ export default function HomePage() {
           {/* CTA buttons */}
           <motion.div
             variants={fadeUp}
+            className="btn-stack-mobile"
             style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 56 }}
           >
             {user ? (
@@ -235,6 +232,7 @@ export default function HomePage() {
           {/* Trust strip */}
           <motion.div
             variants={fadeUp}
+            className="trust-strip"
             style={{
               display: 'flex', gap: 56, flexWrap: 'wrap', justifyContent: 'center',
               paddingTop: 36,
@@ -277,7 +275,7 @@ export default function HomePage() {
           {statsLoading ? (
             <Loader text="Синхронизация..." />
           ) : (
-            <div style={{
+            <div className="stats-grid" style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
               gap: 20,
@@ -298,7 +296,7 @@ export default function HomePage() {
             title="Возможности платформы"
             subtitle="Передовые технологии для защиты экологии Казахстана"
           />
-          <div style={{
+          <div className="features-grid" style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: 20,
@@ -447,7 +445,7 @@ export default function HomePage() {
               )}
             </motion.div>
           ) : (
-            <div style={{
+            <div className="reports-grid" style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
               gap: 20,

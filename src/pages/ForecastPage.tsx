@@ -123,7 +123,7 @@ export default function ForecastPage() {
   const selected = selectedIdx !== null ? results[selectedIdx] : null;
 
   return (
-    <div style={{ fontFamily: FONT, padding: '104px 40px 80px', position: 'relative', display: 'flex', flexDirection: 'column', gap: 40 }}>
+    <div className="page-container" style={{ fontFamily: FONT, position: 'relative', display: 'flex', flexDirection: 'column', gap: 40 }}>
       <div className="glow-orb" style={{ width: 500, height: 500, top: -80, right: -80, opacity: 0.05, background: '#fbbf24' }} />
 
       {/* Header */}
@@ -133,7 +133,7 @@ export default function ForecastPage() {
       >
         <div>
           <p style={{ fontFamily: FONT, fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--amber)', marginBottom: 12 }}>AI Прогнозирование</p>
-          <h1 style={{ fontFamily: FONT, fontSize: 52, fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--text-1)', lineHeight: 1.05, marginBottom: 14 }}>
+          <h1 style={{ fontFamily: FONT, fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--text-1)', lineHeight: 1.05, marginBottom: 14 }}>
             Анализ риска
           </h1>
           <p style={{ fontFamily: FONT, fontSize: 17, fontWeight: 500, color: 'var(--text-muted)', maxWidth: 520, lineHeight: 1.6 }}>
@@ -221,7 +221,7 @@ export default function ForecastPage() {
           </div>
 
           {/* Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+          <div className="forecast-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
             {results.map((r, idx) => (
               <motion.button
                 key={r.name}
@@ -262,7 +262,7 @@ export default function ForecastPage() {
                 }}
               >
                 <div style={{ padding: '36px 40px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'row', gap: 40, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                  <div className="forecast-detail-row" style={{ display: 'flex', flexDirection: 'row', gap: 40, alignItems: 'flex-start', flexWrap: 'wrap' }}>
                     <div style={{ flexShrink: 0 }}>
                       <RiskGauge value={selected.risk} size={130} />
                     </div>
@@ -271,7 +271,7 @@ export default function ForecastPage() {
                         <h3 style={{ fontFamily: FONT, fontSize: 30, fontWeight: 800, color: 'var(--text-1)', marginBottom: 6 }}>{selected.name}</h3>
                         <p style={{ fontFamily: FONT, fontSize: 14, fontWeight: 500, color: 'var(--text-muted)' }}>Подробный анализ экологического риска</p>
                       </div>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+                      <div className="forecast-detail-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
                         {[
                           { label: 'Обращений', value: selected.total, color: 'var(--green)' },
                           { label: 'За 30 дней', value: selected.recent, color: 'var(--amber)' },

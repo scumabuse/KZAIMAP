@@ -79,7 +79,7 @@ export default function MapPage() {
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4 }}
-        className="absolute z-[1000]"
+        className="map-search-wrap absolute z-[1000]"
         style={{ top: '24px', left: '104px' }}
       >
         <MapSearch
@@ -88,7 +88,7 @@ export default function MapPage() {
       </motion.div>
 
       {/* Controls overlay (Top Right) */}
-      <div className="absolute top-8 right-8 z-[1000] flex flex-col" style={{ gap: '20px' }}>
+      <div className="map-controls-top absolute top-8 right-8 z-[1000] flex flex-col" style={{ gap: '20px' }}>
         {/* Mode toggle */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -136,7 +136,7 @@ export default function MapPage() {
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.2, duration: 0.4 }}
-        className="absolute bottom-10 left-8 z-[1000]"
+        className="map-legend-wrap absolute bottom-10 left-8 z-[1000]"
       >
         <div
           className="rounded-[32px] min-w-[300px]"
