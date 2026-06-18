@@ -13,11 +13,6 @@ const mobileNavItems = [
 
 export default function Layout() {
   const location = useLocation();
-  const { isAdmin } = useAuth();
-
-  const mobileItems = isAdmin
-    ? [...mobileNavItems, { to: '/admin', label: 'Админ', icon: Shield }]
-    : mobileNavItems;
 
   return (
     <div style={{ height: '100vh', overflow: 'hidden', position: 'relative', background: 'var(--bg)' }}>
@@ -40,7 +35,7 @@ export default function Layout() {
       {/* Mobile bottom navigation — hidden on desktop via CSS */}
       <nav className="mobile-nav">
         <div className="mobile-nav-inner">
-          {mobileItems.map(({ to, label, icon: Icon }) => {
+          {mobileNavItems.map(({ to, label, icon: Icon }) => {
             const isActive = to === '/'
               ? location.pathname === '/'
               : location.pathname.startsWith(to);

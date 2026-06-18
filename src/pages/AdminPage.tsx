@@ -26,6 +26,8 @@ export default function AdminPage() {
   const [view, setView] = useState<'grid' | 'table'>('table');
   const [bulkRunning, setBulkRunning] = useState(false);
   const [bulkProgress, setBulkProgress] = useState<{ done: number; total: number } | null>(null);
+  const [passwordOk, setPasswordOk] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
 
   const handleStatusChange = async (id: string, status: 'pending' | 'verified' | 'rejected') => {
     try {
@@ -127,6 +129,49 @@ export default function AdminPage() {
             Эта страница доступна только администраторам.
           </p>
           <button onClick={() => navigate('/')} className="btn-ghost">← На главную</button>
+        </motion.div>
+      </div>
+    );
+  }
+
+  if (!passwordOk) {
+    return (
+      <div className="p-12 flex flex-col items-center justify-center min-h-[80vh]">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="card p-14 text-center max-w-md w-full"
+        >
+          <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
+            style={{ background: 'rgba(74,222,128,0.08)', border: '1px solid rgba(74,222,128,0.15)' }}>
+            <Shield size={40} style={{ color: 'var(--green)' }} />
+          </div>
+          <h2 className="text-2xl font-bold mb-3" style={{ fontFamily: 'Syne', color: 'var(--text-1)' }}>
+            Вход в админку
+          </h2>
+          <p className="mb-6 font-medium" style={{ color: 'var(--text-muted)' }}>
+            Введите пароль для доступа
+          </p>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            if (passwordInput === '123456') {
+              setPasswordOk(true);
+            } else {
+              toast.error('Неверный пароль');
+            }
+          }} className="flex flex-col gap-4">
+            <input
+              type="password"
+              placeholder="Пароль..."
+              className="eco-input"
+              value={passwordInput}
+              onChange={(e) => setPasswordInput(e.target.value)}
+              autoFocus
+            />
+            <button type="submit" className="btn-primary w-full justify-center">
+              Войти
+            </button>
+          </form>
         </motion.div>
       </div>
     );

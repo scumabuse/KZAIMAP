@@ -40,9 +40,7 @@ export default function Sidebar() {
     navigate('/login');
   };
 
-  const links = isAdmin
-    ? [...navItems, { to: '/admin', label: 'Администратор', icon: Shield, desc: 'Модерация' }]
-    : navItems;
+  const links = navItems;
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
